@@ -13,7 +13,7 @@ class CommandBuilder
 
       case select_value
       when ATTACK
-        return new Command(select_value, Command.ENEMY)
+        return new AttackCommand(actor, GameMaster.enemy_list)
       end
     end
   end
