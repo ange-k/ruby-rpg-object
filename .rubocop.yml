@@ -1,0 +1,10 @@
+# Use only ascii symbols in comments.
+AllCops:
+  TargetRubyVersion: 2.5
+AsciiComments:
+  Enabled: false
+Style/FrozenStringLiteralComment:
+  Enabled: false
+MethodLength:
+  CountComments: true  # count full line comments?
+  Max: 30
