@@ -42,6 +42,7 @@ class Actor
     damage >= 0 ? damage : 0
     @hp -= damage.abs
     defend_msg(damage.abs)
+    kill_msg unless @hp.positive?
     damage # Rubyは最後に使われた変数や、関数の戻り値をReturnする(Return省略)
   end
 
@@ -62,5 +63,9 @@ class Actor
 
   def defend_msg(damage)
     p "#{name} は #{damage} の ダメージを受けた！ (#{@hp}/#{@max_hp})"
+  end
+
+  def kill_msg
+    p "#{name} は たおれた！"
   end
 end

@@ -6,9 +6,14 @@ class Monster < Actor
 
   # 基本のAI(攻撃するだけ)
   def target_ai(player_list)
-    player_list.sort! do |a, b|
+    # HP 0以下の相手は含めない
+    target_list = player_list.select do |target|
+      target.hp.positive?
+    end
+
+    target_list.sort! do |a, b|
       a.hp <=> b.hp
     end
-    AttackCommand.new(self, nil, player_list.last)
+    AttackCommand.new(self, nil, target_list.last)
   end
 end

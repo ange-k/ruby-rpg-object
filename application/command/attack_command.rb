@@ -9,10 +9,14 @@ class AttackCommand < Command
   end
 
   def strategise
+    # HP 0以下の相手は選択肢に含めない
+    target_list = @target_list.select do |target|
+      target.hp.positive?
+    end
     loop do
       p '攻撃対象を選択してください.'
       p '---------------'
-      @target_list.each_with_index do |target, idx|
+      target_list.each_with_index do |target, idx|
         p "#{idx + 1}: #{target.name}"
       end
       p '---------------'
@@ -21,9 +25,9 @@ class AttackCommand < Command
       select_value = select_value.to_i # 整数変換
 
       # 入力が正の整数かつ、敵リストの範囲に収まるか
-      next unless select_value.positive? && (@target_list.length >= select_value)
+      next unless select_value.positive? && (target_list.length >= select_value)
 
-      @target = @target_list[select_value - 1]
+      @target = target_list[select_value - 1]
       return self
     end
   end
