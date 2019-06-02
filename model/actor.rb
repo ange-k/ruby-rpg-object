@@ -39,13 +39,17 @@ class Actor
   def defend(enemy_offense)
     damage = @defence - enemy_offense
     damage >= 0 ? damage : 0
-    p "#{name} は #{damage} の ダメージを受けた！"
-    @hp -= damage
+    @hp -= damage.abs
+    p "#{name} は #{damage.abs} の ダメージを受けた！ (#{@hp}/#{@max_hp})"
     damage # Rubyは最後に使われた変数や、関数の戻り値をReturnする(Return省略)
   end
 
   # 生死を返す
   def alive?
     @hp.positive? # @hp > 0 と同等
+  end
+
+  def death?
+    !alive?
   end
 end
