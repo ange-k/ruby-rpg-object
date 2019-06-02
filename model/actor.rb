@@ -2,6 +2,7 @@
 # Statusを持ち、ターン中に行動しなければならない
 class Actor
   attr_reader :name, :speed, :luck, :hp, :mp # getter. 読み出し専用メソッドの自動実装
+  attr_reader :offense, :defense
 
   # コンストラクタ. Newしたときに呼ばれる初期化処理
   def initialize(name, strength, speed, vitality, intelligence, luck)
@@ -18,7 +19,7 @@ class Actor
     @hp = @max_hp
     @mp = @max_mp
     @offense = @strength * 2
-    @defence = @vitality
+    @defense = @vitality
   end
 
   # 行動する(Actorでは継承先に実装することを強要させる仕組みを用意する)
@@ -31,16 +32,16 @@ class Actor
   # 引数に与えられた相手に攻撃する
   def attack(target_actor)
     # defendがdamageをReturnするので、ここでもdamageがReturnされる
-    p "#{@name} は #{target_actor.name} に 殴りかかった！"
-    target_actor.defend(@offense)
+    attack_msg(target_actor)
+    target_actor.defend(offense)
   end
 
   # 攻撃されたら防御する
   def defend(enemy_offense)
-    damage = @defence - enemy_offense
+    damage = defense - enemy_offense
     damage >= 0 ? damage : 0
     @hp -= damage.abs
-    p "#{name} は #{damage.abs} の ダメージを受けた！ (#{@hp}/#{@max_hp})"
+    defend_msg(damage.abs)
     damage # Rubyは最後に使われた変数や、関数の戻り値をReturnする(Return省略)
   end
 
@@ -51,5 +52,15 @@ class Actor
 
   def death?
     !alive?
+  end
+
+  private
+
+  def attack_msg(target_actor)
+    p "#{name} は #{target_actor.name} に 殴りかかった！"
+  end
+
+  def defend_msg(damage)
+    p "#{name} は #{damage} の ダメージを受けた！ (#{@hp}/#{@max_hp})"
   end
 end

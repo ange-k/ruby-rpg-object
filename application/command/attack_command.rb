@@ -21,7 +21,7 @@ class AttackCommand < Command
       select_value = select_value.to_i # 整数変換
 
       # 入力が正の整数かつ、敵リストの範囲に収まるか
-      next unless select_value.positive? && (@target_list.length <= select_value)
+      next unless select_value.positive? && (@target_list.length >= select_value)
 
       @target = @target_list[select_value - 1]
       return self
