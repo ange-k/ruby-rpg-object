@@ -21,6 +21,10 @@ class GameMaster
     def start
       actor_list = @player_list | @enemy_list # 配列のマージ
       until gameset?
+        # この時点でHP0なら戦闘に参加させない
+        actor_list = actor_list.select do |actor|
+          actor.alive?
+        end
         # 作戦フェーズ
         actor_commands = actor_list.map(&:action)
         # Turn

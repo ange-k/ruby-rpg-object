@@ -34,7 +34,6 @@ class MagicCommand < Command
   end
 
   def action
-    # TODO: 既に死んでることを考慮する必要がある
-    @actor.attack_magic(@target, @magic)
+    actor.attack_magic(@target, @magic) if actor.alive? && @target.alive?
   end
 end

@@ -33,7 +33,6 @@ class AttackCommand < Command
   end
 
   def action
-    # TODO: 既に死んでることを考慮する必要がある
-    @actor.attack(@target)
+    @actor.attack(@target) if actor.alive? && @target.alive?
   end
 end
