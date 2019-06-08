@@ -45,8 +45,21 @@ class Actor
       # mp切れ
       mp_out_msg
     else
+      @mp -= magic.mp
       magic_msg(target_actor, magic)
       target_actor.defend(magic.effect)
+    end
+  end
+
+  # 引数に与えられた相手に魔法で回復する
+  def heal_magic(target_actor, magic)
+    if (mp - magic.mp) < 0
+      # mp切れ
+      mp_out_msg
+    else
+      @mp -= magic.mp
+      magic_msg(target_actor, magic)
+      target_actor.heal(magic.effect)
     end
   end
 
@@ -58,6 +71,16 @@ class Actor
     defend_msg(damage.abs)
     kill_msg unless @hp.positive?
     damage # Rubyは最後に使われた変数や、関数の戻り値をReturnする(Return省略)
+  end
+
+  # 回復を受ける
+  def heal(effect)
+    if (hp + effect) > @max_hp
+      @hp = @max_hp
+    else
+      @hp += effect
+    end
+    heal_msg(effect)
   end
 
   # 生死を返す
@@ -86,11 +109,15 @@ class Actor
   end
 
   def magic_msg(target_actor, magic)
-    p "#{name} は #{target_actor.name} に #{magic.name}を唱えた！"
+    p "#{name} は #{target_actor.name} に #{magic.name}を唱えた！ MP(#{@mp}/#{@max_mp})"
   end
 
   def mp_out_msg()
     p "しかし、MPが足りない！"
+  end
+
+  def heal_msg(effect)
+    p "#{name} は HPを #{effect} 回復した！"
   end
 
   def kill_msg
