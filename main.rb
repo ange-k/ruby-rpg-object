@@ -2,6 +2,7 @@ Dir['./application/*.rb'].each { |file| require file }
 Dir['./model/*.rb'].each { |file| require file }
 Dir['./model/item/*.rb'].each { |file| require file }
 Dir['./model/magic/*.rb'].each { |file| require file }
+Dir['./application/ai/*.rb'].each { |file| require file }
 
 # アイテムデータの組み立て
 hinoki_bou = Equipment.new('ひのきのぼう',5, 0)
@@ -24,6 +25,7 @@ monster_a = Monster.new('ホイミスライム', 2, 4, 1, 4, 1)
 monster_b = Monster.new('おおがらす', 4, 6, 2, 4, 1)
 
 monster_a.learn([magic])
+monster_a.ai = HealAI.new(monster_a)
 enemy_list = [monster_a, monster_b]
 
 GameMaster.set(player_list, enemy_list)

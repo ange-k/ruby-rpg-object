@@ -92,6 +92,11 @@ class Actor
     !alive?
   end
 
+  # 受けているダメージを返す
+  def damaged
+    @max_hp - @hp
+  end
+
   # 魔法を覚える
   def learn(magic_list)
     @magics = magics | magic_list

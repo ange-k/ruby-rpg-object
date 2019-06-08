@@ -22,6 +22,7 @@ class CommandBuilder
         case select_value
         when ATTACK
           command = AttackCommand.new(actor, GameMaster.enemy_list)
+          break
         when MAGIC
           magic = selectMagic(actor.magics)
           case magic.type
@@ -39,7 +40,7 @@ class CommandBuilder
 
     # まもの用ビルダー
     def auto(actor)
-      actor.target_ai(GameMaster.player_list, GameMaster.enemy_list)
+      actor.ai.build(GameMaster.player_list, GameMaster.enemy_list)
     end
 
     private
