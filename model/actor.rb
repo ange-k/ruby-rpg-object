@@ -3,6 +3,7 @@
 class Actor
   attr_reader :name, :speed, :luck, :hp, :mp # getter. 読み出し専用メソッドの自動実装
   attr_reader :offense, :defense
+  attr_reader :magics
 
   # コンストラクタ. Newしたときに呼ばれる初期化処理
   def initialize(name, strength, speed, vitality, intelligence, luck)
@@ -20,6 +21,8 @@ class Actor
     @mp = @max_mp
     @offense = @strength * 2
     @defense = @vitality
+    # 魔法取得リスト
+    @magics = []
   end
 
   # 行動する(Actorでは継承先に実装することを強要させる仕組みを用意する)
@@ -34,6 +37,17 @@ class Actor
     # defendがdamageをReturnするので、ここでもdamageがReturnされる
     attack_msg(target_actor)
     target_actor.defend(offense)
+  end
+
+  # 引数に与えられた相手に魔法で攻撃する
+  def attack_magic(target_actor, magic)
+    if (mp - magic.mp) < 0
+      # mp切れ
+      mp_out_msg
+    else
+      magic_msg(target_actor, magic)
+      target_actor.defend(magic.effect)
+    end
   end
 
   # 攻撃されたら防御する
@@ -55,14 +69,28 @@ class Actor
     !alive?
   end
 
+  # 魔法を覚える
+  def learn(magic_list)
+    @magics = magics | magic_list
+  end
+
   private
 
+  # 戦闘メッセージ
   def attack_msg(target_actor)
     p "#{name} は #{target_actor.name} に 殴りかかった！"
   end
 
   def defend_msg(damage)
     p "#{name} は #{damage} の ダメージを受けた！ (#{@hp}/#{@max_hp})"
+  end
+
+  def magic_msg(target_actor, magic)
+    p "#{name} は #{target_actor.name} に #{magic.name}を唱えた！"
+  end
+
+  def mp_out_msg()
+    p "しかし、MPが足りない！"
   end
 
   def kill_msg

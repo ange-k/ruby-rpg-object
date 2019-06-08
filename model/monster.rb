@@ -5,7 +5,7 @@ class Monster < Actor
   end
 
   # 基本のAI(攻撃するだけ)
-  def target_ai(player_list)
+  def target_ai(player_list, monster_list = nil)
     # HP 0以下の相手は含めない
     target_list = player_list.select do |target|
       target.hp.positive?
