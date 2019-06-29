@@ -11,11 +11,11 @@ class CommandBuilder
     def select(actor)
       command = nil
       loop do
-        p '行動を選択してください.'
-        p '---------------'
-        p "#{ATTACK}: 攻撃する"
-        p "#{MAGIC}: じゅもん"
-        p '---------------'
+        puts '行動を選択してください.'
+        puts '---------------'
+        puts "#{ATTACK}: 攻撃する"
+        puts "#{MAGIC}: じゅもん"
+        puts '---------------'
         select_value = readline
         next unless [ATTACK, MAGIC].include?(select_value.chomp!)
 
@@ -33,6 +33,8 @@ class CommandBuilder
             command = MagicCommand.new(actor, magic, GameMaster.enemy_list)
             break
           end
+        else
+          raise '想定外のパラメータ.'
         end
       end
       command.strategise
@@ -48,12 +50,12 @@ class CommandBuilder
     # 魔法選択
     def selectMagic(magics)
       loop do
-        p 'じゅもんを選択してください.'
-        p '---------------'
+        puts 'じゅもんを選択してください.'
+        puts '---------------'
         magics.each_with_index do |magic, index|
-          p "#{index + 1} : #{magic.name}"
+          puts "#{index + 1} : #{magic.name}(#{magic.mp})"
         end
-        p '---------------'
+        puts '---------------'
       select_value = readline.chomp!
       next unless select_value.to_i.to_s == select_value
       select_value = select_value.to_i # 整数変換

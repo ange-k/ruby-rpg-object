@@ -36,7 +36,7 @@ class Hero < Actor
   # Override
   def attack_msg(target_actor)
     if @weapon
-      p "#{name} は #{target_actor.name} に #{@weapon.name}で襲いかかった！！"
+      puts "#{name} は #{target_actor.name} に #{@weapon.name}で襲いかかった！！"
     else
       super
     end
@@ -45,9 +45,14 @@ class Hero < Actor
   # Override
   def defend_msg(damage)
     if @armor
-      p "#{name} は #{@armor.name}の上から #{damage} の ダメージを受けた！ (#{@hp}/#{@max_hp})"
+      puts "#{name} は #{@armor.name}の上から #{damage} の ダメージを受けた！ (#{@hp}/#{@max_hp})"
     else
       super
     end
+  end
+
+  # Override
+  def critical_damaged_msg
+    print "★痛恨の一撃! "
   end
 end

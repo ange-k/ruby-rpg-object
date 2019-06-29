@@ -1,5 +1,6 @@
 Dir['./application/command/*.rb'].each { |file| require file }
 
+# 単純なAI
 class Basic
 
   def initialize(actor)

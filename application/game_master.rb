@@ -30,7 +30,8 @@ class GameMaster
         # Turn
         Turn.start(actor_commands)
       end
-      p 'gameset!!'
+      print '戦闘に勝利した.' if @enemy_list.all?(&:death?)
+      print "#{@player_list.first.name}は 全滅した..." if @player_list.all?(&:death?)
     end
 
     private

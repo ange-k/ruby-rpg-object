@@ -1,8 +1,10 @@
+# 魔法
 class Magic
   attr_reader :name, :effect, :mp, :type
   FRIEND = 0  # 回復
   ENEMY = 1   # 攻撃
 
+  # TODO: 全体攻撃の概念がない
   def initialize(name, effect, mp, type)
     @name = name
     @effect = effect

@@ -1,0 +1,70 @@
+digraph yard {
+  graph [rankdir=BT rank=sink outputMode=nodesfirst packMode="graph" splines=true];
+  node [shape=record rank=sink rankType=sink];
+  Root [label="{root root||}" rank=sink];
+  Basic [label="{class Basic||+ \#build\l+ \#initialize\ \:\ Basic\l}" rank=sink];
+  subgraph cluster_Basic {
+    label = "Basic"; labelloc=b;
+  }
+  HealAI [label="{class HealAI|+ \#actor [R]\l|+ \#build\l+ \#initialize\ \:\ HealAI\l}" rank=sink];
+  subgraph cluster_HealAI {
+    label = "HealAI"; labelloc=b;
+  }
+  HealAI -> Basic;
+  AttackCommand [label="{class AttackCommand|+ \#actor [R]\l|+ \#action\l+ \#initialize\ \:\ AttackCommand\l+ \#strategise\l}" rank=sink];
+  subgraph cluster_AttackCommand {
+    label = "AttackCommand"; labelloc=b;
+  }
+  AttackCommand -> Command;
+  Command [label="{class Command||+ \#action\l+ \#strategise\l}" rank=sink];
+  subgraph cluster_Command {
+    label = "Command"; labelloc=b;
+  }
+  HealCommand [label="{class HealCommand|+ \#actor [R]\l|+ \#action\l+ \#initialize\ \:\ HealCommand\l+ \#strategise\l}" rank=sink];
+  subgraph cluster_HealCommand {
+    label = "HealCommand"; labelloc=b;
+  }
+  HealCommand -> Command;
+  MagicCommand [label="{class MagicCommand|+ \#actor [R]\l|+ \#action\l+ \#initialize\ \:\ MagicCommand\l+ \#strategise\l}" rank=sink];
+  subgraph cluster_MagicCommand {
+    label = "MagicCommand"; labelloc=b;
+  }
+  MagicCommand -> Command;
+  Equipment [label="{class Equipment|+ \#defense [R]\l+ \#name [R]\l+ \#offense [R]\l|+ \#initialize\ \:\ Equipment\l}" rank=sink];
+  subgraph cluster_Equipment {
+    label = "Equipment"; labelloc=b;
+  }
+  Magic [label="{class Magic|+ \#effect [R]\l+ \#mp [R]\l+ \#name [R]\l+ \#type [R]\l|+ \#initialize\ \:\ Magic\l}" rank=sink];
+  subgraph cluster_Magic {
+    label = "Magic"; labelloc=b;
+  }
+  CommandBuilder [label="{class CommandBuilder||+ auto\l+ select\l}" rank=sink];
+  subgraph cluster_CommandBuilder {
+    label = "CommandBuilder"; labelloc=b;
+  }
+  GameMaster [label="{class GameMaster||+ enemy_list\l+ player_list\l+ set\l+ start\l}" rank=sink];
+  subgraph cluster_GameMaster {
+    label = "GameMaster"; labelloc=b;
+  }
+  Turn [label="{class Turn||+ start\l}" rank=sink];
+  subgraph cluster_Turn {
+    label = "Turn"; labelloc=b;
+  }
+  Actor [label="{class Actor|+ \#defense [R]\l+ \#hp [R]\l+ \#luck [R]\l+ \#magics [R]\l+ \#mp [R]\l+ \#name [R]\l+ \#offense [R]\l+ \#speed [R]\l|+ \#action\l+ \#alive\?\ \:\ Boolean\l+ \#attack\l+ \#attack_magic\l+ \#damaged\l+ \#death\?\ \:\ Boolean\l+ \#defend\l+ \#heal\l+ \#heal_magic\l+ \#initialize\ \:\ Actor\l+ \#learn\l}" rank=sink];
+  subgraph cluster_Actor {
+    label = "Actor"; labelloc=b;
+  }
+  Hero [label="{class Hero|+ \#armor [W]\l+ \#weapon [W]\l|+ \#action\l+ \#defense\l+ \#initialize\ \:\ Hero\l+ \#offense\l}" rank=sink];
+  subgraph cluster_Hero {
+    label = "Hero"; labelloc=b;
+  }
+  Hero -> Actor;
+  Monster [label="{class Monster|+ \#ai [RW]\l|+ \#action\l+ \#initialize\ \:\ Monster\l}" rank=sink];
+  subgraph cluster_Monster {
+    label = "Monster"; labelloc=b;
+  }
+  Monster -> Actor;
+  subgraph cluster_ {
+    label = ""; labelloc=b;
+  }
+}

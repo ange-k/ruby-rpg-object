@@ -2,18 +2,18 @@
 # Statusを持ち、ターン中に行動しなければならない
 class Actor
   attr_reader :name, :speed, :luck, :hp, :mp # getter. 読み出し専用メソッドの自動実装
-  attr_reader :offense, :defense
+  attr_reader :offense, :defense, :random
   attr_reader :magics
 
   # コンストラクタ. Newしたときに呼ばれる初期化処理
   def initialize(name, strength, speed, vitality, intelligence, luck)
     @name = name
     # 基礎パラメータ
-    @strength = strength
-    @speed = speed
-    @vitality = vitality
-    @intelligence = intelligence
-    @luck = luck
+    @strength = strength # 物理攻撃力に影響
+    @speed = speed # 行動順に影響
+    @vitality = vitality # HP最大値、及び防御力に影響
+    @intelligence = intelligence # MP最大値に影響
+    @luck = luck # 状態異常の判定に用いる. TODO: 状態異常の実装
     # 戦闘用パラメータ
     @max_hp = 50 + (@vitality * 4)
     @max_mp = 10 + (@intelligence * 5)
@@ -23,6 +23,8 @@ class Actor
     @defense = @vitality
     # 魔法取得リスト
     @magics = []
+    # 乱数生成オブジェクト
+    @random = Random.new
   end
 
   # 行動する(Actorでは継承先に実装することを強要させる仕組みを用意する)
@@ -64,13 +66,24 @@ class Actor
   end
 
   # 攻撃されたら防御する
+  # TODO: 魔法でcriticalしないようにする
   def defend(enemy_offense)
-    damage = defense - enemy_offense
-    damage >= 0 ? damage : 0
+    if(critical?)
+      damage = enemy_offense * 2
+      critical_damaged_msg
+    else
+      damage = defense - enemy_offense
+      damage >= 0 ? damage : 0
+    end
     @hp -= damage.abs
     defend_msg(damage.abs)
     kill_msg unless @hp.positive?
     damage # Rubyは最後に使われた変数や、関数の戻り値をReturnする(Return省略)
+  end
+
+  def critical?
+    # 会心(痛恨)の一撃の判定
+    random.rand(1..32) == 16 # 1/32が言いたいだけ
   end
 
   # 回復を受ける
@@ -106,26 +119,30 @@ class Actor
 
   # 戦闘メッセージ
   def attack_msg(target_actor)
-    p "#{name} は #{target_actor.name} に 殴りかかった！"
+    puts "#{name} は #{target_actor.name} に 殴りかかった！"
   end
 
   def defend_msg(damage)
-    p "#{name} は #{damage} の ダメージを受けた！ (#{@hp}/#{@max_hp})"
+    puts "#{name} は #{damage} の ダメージを受けた！ (#{@hp}/#{@max_hp})"
+  end
+
+  def critical_damaged_msg
+    print "★会心の一撃! "
   end
 
   def magic_msg(target_actor, magic)
-    p "#{name} は #{target_actor.name} に #{magic.name}を唱えた！ MP(#{@mp}/#{@max_mp})"
+    puts "#{name} は #{target_actor.name} に #{magic.name}を唱えた！ MP(#{@mp}/#{@max_mp})"
   end
 
   def mp_out_msg()
-    p "しかし、MPが足りない！"
+    puts "しかし、MPが足りない！"
   end
 
   def heal_msg(effect)
-    p "#{name} は HPを #{effect} 回復した！"
+    puts "#{name} は HPを #{effect} 回復した！"
   end
 
   def kill_msg
-    p "#{name} は たおれた！"
+    puts "#{name} は たおれた！"
   end
 end
